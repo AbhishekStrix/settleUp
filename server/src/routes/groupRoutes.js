@@ -14,6 +14,7 @@ import {
   joinGroup,
   changeMemberRole,
   removeMember,
+  getGroupInfoByInvite,
 } from '../controllers/groupController.js';
 
 import { validateGroup } from '../middleware/validationMiddleware.js';
@@ -22,6 +23,7 @@ const router = express.Router();
 
 router.post('/groups', isAuthenticated, validateGroup, createGroup);
 router.get('/groups', isAuthenticated, listGroups);
+router.get('/groups/invite/:inviteCode', isAuthenticated, getGroupInfoByInvite);
 router.post('/groups/join/:inviteCode', isAuthenticated, joinGroup);
 
 router.get('/groups/:id', isAuthenticated, isGroupMember, getGroupDetail);

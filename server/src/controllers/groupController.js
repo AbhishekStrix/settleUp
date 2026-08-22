@@ -189,3 +189,26 @@ export const removeMember = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getGroupInfoByInvite = async (req, res, next) => {
+  try {
+    const { inviteCode } = req.params;
+    if (!inviteCode) {
+      return res.status(400).json({ message: 'Invite code is required' });
+    }
+
+    const group = await Group.findOne({ inviteCode: inviteCode.toUpperCase() });
+    if (!group) {
+      return res.status(404).json({ message: 'Group not found with this invite code' });
+    }
+
+    res.status(200).json({
+      _id: group._id,
+      name: group.name,
+      description: group.description,
+      memberCount: group.members.length
+    });
+  } catch (error) {
+    next(error);
+  }
+};
